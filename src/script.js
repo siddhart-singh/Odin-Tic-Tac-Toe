@@ -17,11 +17,16 @@ function players(name, mark) {
     return marker;
   }
 
-  return { playerName, getMarker, setMoves, getMoves };
+  function getName() {
+    return playerName;
+  }
+
+  return { getName, getMarker, setMoves, getMoves };
 }
 
 const player1 = players("player1", "X");
 const player2 = players("player2", "O");
+
 function gameBoard() {
   let board = [];
   let activePlayer = player1;
@@ -152,10 +157,10 @@ function gameBoard() {
   }
 
   function makeMove(row, column) {
-    console.log(`Make move ${activePlayer.playerName}`);
+    console.log(`Make move ${activePlayer.getName()}`);
     activePlayer.setMoves([row, column]);
     createGameBoard();
-    winner()
+    winner();
     activePlayer = activePlayer === player1 ? player2 : player1;
   }
 
@@ -164,25 +169,25 @@ function gameBoard() {
   }
 
   function winner() {
-    let winnerFlagCount = 0;;
-    winningScenario.forEach(scenario => {
-      activePlayer.getMoves().forEach(moved => {
-        scenario.forEach(placement => {
-          if(moved.join() === placement.join()) {
+    let winnerFlagCount = 0;
+    winningScenario.forEach((scenario) => {
+      activePlayer.getMoves().forEach((moved) => {
+        scenario.forEach((placement) => {
+          if (moved.join() === placement.join()) {
             winnerFlagCount++;
           }
-        })
+        });
         if (winnerFlagCount === 3) {
           printWinner();
         }
-      })
+      });
       winnerFlagCount = 0;
-    })
+    });
     return -1;
   }
 
   function printWinner() {
-    console.log(`${activePlayer.name} WON !!!!!!!!!!!!`);
+    console.log(`${activePlayer.getName()} WON !!!!!!!!!!!!`);
   }
 
   function getWinningScenario() {
@@ -193,8 +198,29 @@ function gameBoard() {
 }
 
 function displayController() {
+  const game = gameBoard();
   const displayBoard = document.querySelector(".board");
-  
+
+  function createButton(row, col) {
+    const button = document.createElement("button");
+    button.innerText = game.getBoard()[row][col];
+    button.setAttribute("type", "button");
+    button.classList.add("board-btn");
+    button.setAttribute("data-index", `${row} ${col}`);
+    return button;
+  }
+
+  function generateUiBoard() {
+    game.createGameBoard();
+    const recieveGameBoard = game.getBoard();
+    recieveGameBoard.forEach((row, indexRow) => {
+      row.forEach((col, indexCol) => {
+        displayBoard.appendChild(createButton(indexRow, indexCol));
+      });
+    });
+  }
+
+  generateUiBoard();
 }
 
 displayController();

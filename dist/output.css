@@ -574,6 +574,9 @@ video {
   }
 }
 
+.tile {
+}
+
 .board-btn {
   border-width: 1px;
   --tw-border-opacity: 1;
