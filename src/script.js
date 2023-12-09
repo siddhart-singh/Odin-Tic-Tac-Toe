@@ -5,7 +5,7 @@ function players(name, mark) {
   const playerMoves = [];
   const marker = mark;
 
-  function setMoves(...move) {
+  function setMoves(move) {
     playerMoves.push(move);
   }
 
@@ -20,14 +20,118 @@ function players(name, mark) {
   return { playerName, getMarker, setMoves, getMoves };
 }
 
-
-//Creating Players for testing
 const player1 = players("player1", "X");
 const player2 = players("player2", "O");
-
 function gameBoard() {
   let board = [];
   let activePlayer = player1;
+  let winningScenario = [
+    [
+      [0, 0],
+      [0, 1],
+      [0, 2],
+    ],
+    [
+      [0, 0],
+      [1, 1],
+      [2, 2],
+    ],
+    [
+      [0, 0],
+      [1, 0],
+      [1, 1],
+    ],
+    [
+      [0, 0],
+      [1, 0],
+      [2, 0],
+    ],
+    [
+      [0, 0],
+      [0, 1],
+      [1, 1],
+    ],
+    [
+      [0, 1],
+      [1, 1],
+      [2, 1],
+    ],
+    [
+      [0, 1],
+      [0, 2],
+      [1, 2],
+    ],
+    [
+      [0, 2],
+      [0, 1],
+      [1, 1],
+    ],
+
+    [
+      [0, 2],
+      [1, 2],
+      [1, 1],
+    ],
+    [
+      [0, 2],
+      [1, 2],
+      [2, 2],
+    ],
+    [
+      [1, 0],
+      [0, 0],
+      [0, 1],
+    ],
+    [
+      [1, 0],
+      [1, 1],
+      [1, 2],
+    ],
+    [
+      [1, 2],
+      [2, 2],
+      [2, 1],
+    ],
+    [
+      [2, 0],
+      [2, 1],
+      [2, 2],
+    ],
+
+    [
+      [2, 0],
+      [1, 1],
+      [0, 2],
+    ],
+    [
+      [2, 0],
+      [2, 1],
+      [1, 1],
+    ],
+    [
+      [2, 0],
+      [1, 0],
+      [1, 1],
+    ],
+
+    [
+      [2, 1],
+      [2, 0],
+      [1, 0],
+    ],
+
+    [
+      [2, 2],
+      [1, 2],
+      [1, 1],
+    ],
+
+    [
+      [2, 2],
+      [2, 1],
+      [1, 1],
+    ],
+  ];
 
   function createGameBoard() {
     board = [];
@@ -38,6 +142,7 @@ function gameBoard() {
       }
     }
     player1.getMoves().forEach(([row, column]) => {
+      console.log(board[row][column]);
       board[row][column] = player1.getMarker();
     });
 
@@ -48,8 +153,9 @@ function gameBoard() {
 
   function makeMove(row, column) {
     console.log(`Make move ${activePlayer.playerName}`);
-    activePlayer.setMoves(row, column);
+    activePlayer.setMoves([row, column]);
     createGameBoard();
+    console.log(winner());
     activePlayer = activePlayer === player1 ? player2 : player1;
   }
 
@@ -57,5 +163,9 @@ function gameBoard() {
     return board;
   }
 
-  return { createGameBoard, makeMove, getBoard };
+  function getWinningScenario() {
+    return winningScenario;
+  }
+
+  return { createGameBoard, makeMove, getBoard, getWinningScenario };
 }
