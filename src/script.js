@@ -155,12 +155,34 @@ function gameBoard() {
     console.log(`Make move ${activePlayer.playerName}`);
     activePlayer.setMoves([row, column]);
     createGameBoard();
-    console.log(winner());
+    winner()
     activePlayer = activePlayer === player1 ? player2 : player1;
   }
 
   function getBoard() {
     return board;
+  }
+
+  function winner() {
+    let winnerFlagCount = 0;;
+    winningScenario.forEach(scenario => {
+      activePlayer.getMoves().forEach(moved => {
+        scenario.forEach(placement => {
+          if(moved.join() === placement.join()) {
+            winnerFlagCount++;
+          }
+        })
+        if (winnerFlagCount === 3) {
+          printWinner();
+        }
+      })
+      winnerFlagCount = 0;
+    })
+    return -1;
+  }
+
+  function printWinner() {
+    console.log(`${activePlayer.name} WON !!!!!!!!!!!!`);
   }
 
   function getWinningScenario() {
