@@ -191,3 +191,10 @@ function gameBoard() {
 
   return { createGameBoard, makeMove, getBoard, getWinningScenario };
 }
+
+function displayController() {
+  const displayBoard = document.querySelector(".board");
+  
+}
+
+displayController();

@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .tile {
+  }
+
+  .board-btn {
+    @apply tile border border-gray-500;
+  }
+}
