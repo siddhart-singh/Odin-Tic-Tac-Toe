@@ -173,8 +173,8 @@ function gameBoard() {
       if (!duplicateFlag) {
         activePlayer.setMoves([row, column]);
         createGameBoard();
-        winner();
         activePlayer = switchActivePlayer();
+        return winner();
       }
     }
   }
@@ -186,38 +186,54 @@ function gameBoard() {
   function winner() {
     let winnerFlagCount = 0;
     winningScenario.forEach((scenario) => {
-      activePlayer.getMoves().forEach((moved) => {
-        scenario.forEach((placement) => {
-          if (moved.join() === placement.join()) {
-            winnerFlagCount++;
+      switchActivePlayer()
+        .getMoves()
+        .forEach((moved) => {
+          scenario.forEach((placement) => {
+            if (moved.join() === placement.join()) {
+              winnerFlagCount++;
+            }
+          });
+          if (winnerFlagCount === 3) {
+            gameFlag = true;
           }
         });
-        if (winnerFlagCount === 3) {
-          printWinner();
-          gameFlag = true;
-        }
-      });
       winnerFlagCount = 0;
     });
-    return -1;
+    return printWinner();
   }
 
   function printWinner() {
-    console.log(`${activePlayer.getName()} WON !!!!!!!!!!!!`);
+    if (!gameFlag) {
+      return -1;
+    } else {
+      return `${switchActivePlayer().getName()} WON !!!!!!!!!!!!`;
+    }
   }
 
   function getWinningScenario() {
     return winningScenario;
   }
 
-  return { createGameBoard, makeMove, getBoard, getWinningScenario };
+  function getActivePlayer() {
+    return activePlayer;
+  }
+
+  return {
+    createGameBoard,
+    makeMove,
+    getBoard,
+    getWinningScenario,
+    getActivePlayer,
+  };
 }
 
 function displayController() {
   const game = gameBoard();
   const displayBoard = document.querySelector(".board");
   displayBoard.addEventListener("click", userInput);
-
+  const displayActiveState = document.querySelector(".activeStateDisplay");
+  updateActiveState(-1);
   function createButton(row, col) {
     const button = document.createElement("button");
     button.innerText = game.getBoard()[row][col];
@@ -238,16 +254,36 @@ function displayController() {
     });
   }
 
+  function updateActiveState(e) {
+    console.log(e);
+    let displayOutput = "";
+    if (e == -1) {
+      displayOutput = `${titleDisplay(
+        game.getActivePlayer().getName(),
+      )} Play Move`;
+    } else {
+      displayOutput = titleDisplay(e);
+    }
+    displayActiveState.innerText = displayOutput;
+  }
+
   function userInput(e) {
     const [row, col] = e.target.dataset.index.split(" ");
-    game.makeMove(row, col);
+    updateActiveState(game.makeMove(row, col));
     generateUiBoard();
   }
 
-  return {generateUiBoard}
+  function titleDisplay(str = "") {
+    return str
+      .split(" ")
+      .map((e) => e.slice(0, 1).toUpperCase() + e.slice(1).toLowerCase())
+      .join(" ");
+  }
+
+  return { generateUiBoard };
 }
 
-function gameController(){
+function gameController() {
   const display = displayController();
   display.generateUiBoard();
 }
