@@ -161,20 +161,22 @@ function gameBoard() {
   }
 
   function makeMove(row, column) {
+    let duplicateFlag = false;
     if (!gameFlag) {
       console.log(`Make move ${activePlayer.getName()}`);
       switchActivePlayer()
         .getMoves()
         .forEach((move) => {
           if (move.join() == [row, column].join()) {
-            console.log("Already Played");
-            return -1;
+            duplicateFlag = true;
           }
         });
-      activePlayer.setMoves([row, column]);
-      createGameBoard();
-      winner();
-      activePlayer = switchActivePlayer();
+      if (!duplicateFlag) {
+        activePlayer.setMoves([row, column]);
+        createGameBoard();
+        winner();
+        activePlayer = switchActivePlayer();
+      }
     }
   }
 
@@ -215,6 +217,7 @@ function gameBoard() {
 function displayController() {
   const game = gameBoard();
   const displayBoard = document.querySelector(".board");
+  displayBoard.addEventListener("click", userInput);
 
   function createButton(row, col) {
     const button = document.createElement("button");
@@ -227,19 +230,22 @@ function displayController() {
 
   function generateUiBoard() {
     game.createGameBoard();
-    const recieveGameBoard = game.getBoard();
-    recieveGameBoard.forEach((row, indexRow) => {
+    displayBoard.innerText = "";
+    const receiveGameBoard = game.getBoard();
+    receiveGameBoard.forEach((row, indexRow) => {
       row.forEach((col, indexCol) => {
         displayBoard.appendChild(createButton(indexRow, indexCol));
       });
     });
   }
+
+  function userInput(e) {
+    const [row, col] = e.target.dataset.index.split(" ");
+    game.makeMove(row, col);
+    generateUiBoard();
+  }
+
   generateUiBoard();
-  game.makeMove(0,0);
-  game.makeMove(1,0);
-  game.makeMove(0,1);
-  game.makeMove(1,1);
-  game.makeMove(0,2);
 }
 
 displayController();
