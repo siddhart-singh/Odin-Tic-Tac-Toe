@@ -8,13 +8,16 @@
     <link rel="stylesheet" href="./input.css" />
     <script src="./script.js" defer></script>
   </head>
-  <body class="h-screen w-screen">
+  <body
+    class="flex h-screen w-screen flex-col justify-center gap-8 overflow-hidden py-12"
+  >
+    <h1 class="text-center text-6xl">Tic Tac Toe</h1>
     <div
-      class="container m-auto flex h-full w-full flex-col items-center justify-center gap-6"
+      class="container mx-auto flex flex-col items-center justify-center gap-4"
     >
-      <h1 class="activeStateDisplay"></h1>
+      <h1 class="activeStateDisplay text-lg"></h1>
       <div
-        class="board grid aspect-square w-9/12 grid-cols-3 grid-rows-3 border border-gray-500 bg-slate-300"
+        class="board grid grid-cols-3 grid-rows-3 border border-gray-500 bg-slate-300"
       ></div>
     </div>
   </body>

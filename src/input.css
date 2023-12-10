@@ -7,6 +7,6 @@
   }
 
   .board-btn {
-    @apply tile border border-gray-500;
+    @apply tile border border-gray-500 text-8xl h-40 w-40;
   }
 }
