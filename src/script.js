@@ -176,6 +176,8 @@ function gameBoard() {
         activePlayer = switchActivePlayer();
         return winner();
       }
+    } else {
+      return printWinner();
     }
   }
 
@@ -255,7 +257,6 @@ function displayController() {
   }
 
   function updateActiveState(e) {
-    console.log(e);
     let displayOutput = "";
     if (e == -1) {
       displayOutput = `${titleDisplay(
