@@ -163,7 +163,6 @@ function gameBoard() {
   function makeMove(row, column) {
     let duplicateFlag = false;
     if (!gameFlag) {
-      console.log(`Make move ${activePlayer.getName()}`);
       switchActivePlayer()
         .getMoves()
         .forEach((move) => {
@@ -246,6 +245,10 @@ function displayController() {
   }
 
   generateUiBoard();
+}
+
+function gameController(){
+  
 }
 
 displayController();
