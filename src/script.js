@@ -244,11 +244,12 @@ function displayController() {
     generateUiBoard();
   }
 
-  generateUiBoard();
+  return {generateUiBoard}
 }
 
 function gameController(){
-  
+  const display = displayController();
+  display.generateUiBoard();
 }
 
-displayController();
+gameController();
