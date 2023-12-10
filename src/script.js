@@ -28,6 +28,7 @@ const player1 = players("player1", "X");
 const player2 = players("player2", "O");
 
 function gameBoard() {
+  let gameFlag = false;
   let board = [];
   let activePlayer = player1;
   let winningScenario = [
@@ -147,7 +148,6 @@ function gameBoard() {
       }
     }
     player1.getMoves().forEach(([row, column]) => {
-      console.log(board[row][column]);
       board[row][column] = player1.getMarker();
     });
 
@@ -156,12 +156,26 @@ function gameBoard() {
     });
   }
 
+  function switchActivePlayer() {
+    return activePlayer === player1 ? player2 : player1;
+  }
+
   function makeMove(row, column) {
-    console.log(`Make move ${activePlayer.getName()}`);
-    activePlayer.setMoves([row, column]);
-    createGameBoard();
-    winner();
-    activePlayer = activePlayer === player1 ? player2 : player1;
+    if (!gameFlag) {
+      console.log(`Make move ${activePlayer.getName()}`);
+      switchActivePlayer()
+        .getMoves()
+        .forEach((move) => {
+          if (move.join() == [row, column].join()) {
+            console.log("Already Played");
+            return -1;
+          }
+        });
+      activePlayer.setMoves([row, column]);
+      createGameBoard();
+      winner();
+      activePlayer = switchActivePlayer();
+    }
   }
 
   function getBoard() {
@@ -179,6 +193,7 @@ function gameBoard() {
         });
         if (winnerFlagCount === 3) {
           printWinner();
+          gameFlag = true;
         }
       });
       winnerFlagCount = 0;
@@ -219,8 +234,12 @@ function displayController() {
       });
     });
   }
-
   generateUiBoard();
+  game.makeMove(0,0);
+  game.makeMove(1,0);
+  game.makeMove(0,1);
+  game.makeMove(1,1);
+  game.makeMove(0,2);
 }
 
 displayController();
