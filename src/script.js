@@ -21,123 +21,136 @@ function players(name, mark) {
     return playerName;
   }
 
-  return { getName, getMarker, setMoves, getMoves };
+  function reset() {
+    playerMoves.splice(0, playerMoves.length);
+  }
+
+  return { getName, getMarker, setMoves, getMoves, reset };
 }
 
-const player1 = players("player1", "X");
-const player2 = players("player2", "O");
+const player1 = players("player X", "X");
+const player2 = players("player O", "O");
 
 function gameBoard() {
-  let gameFlag = false;
-  let board = [];
-  let activePlayer = player1;
-  let winningScenario = [
-    [
-      [0, 0],
-      [0, 1],
-      [0, 2],
-    ],
-    [
-      [0, 0],
-      [1, 1],
-      [2, 2],
-    ],
-    [
-      [0, 0],
-      [1, 0],
-      [1, 1],
-    ],
-    [
-      [0, 0],
-      [1, 0],
-      [2, 0],
-    ],
-    [
-      [0, 0],
-      [0, 1],
-      [1, 1],
-    ],
-    [
-      [0, 1],
-      [1, 1],
-      [2, 1],
-    ],
-    [
-      [0, 1],
-      [0, 2],
-      [1, 2],
-    ],
-    [
-      [0, 2],
-      [0, 1],
-      [1, 1],
-    ],
+  let gameFlag;
+  let board;
+  let activePlayer;
+  let winningScenario;
+  init();
 
-    [
-      [0, 2],
-      [1, 2],
-      [1, 1],
-    ],
-    [
-      [0, 2],
-      [1, 2],
-      [2, 2],
-    ],
-    [
-      [1, 0],
-      [0, 0],
-      [0, 1],
-    ],
-    [
-      [1, 0],
-      [1, 1],
-      [1, 2],
-    ],
-    [
-      [1, 2],
-      [2, 2],
-      [2, 1],
-    ],
-    [
-      [2, 0],
-      [2, 1],
-      [2, 2],
-    ],
+  function init() {
+    gameFlag = false;
+    board = [];
+    activePlayer = player1;
+    winningScenario = [
+      [
+        [0, 0],
+        [0, 1],
+        [0, 2],
+      ],
+      [
+        [0, 0],
+        [1, 1],
+        [2, 2],
+      ],
+      [
+        [0, 0],
+        [1, 0],
+        [1, 1],
+      ],
+      [
+        [0, 0],
+        [1, 0],
+        [2, 0],
+      ],
+      [
+        [0, 0],
+        [0, 1],
+        [1, 1],
+      ],
+      [
+        [0, 1],
+        [1, 1],
+        [2, 1],
+      ],
+      [
+        [0, 1],
+        [0, 2],
+        [1, 2],
+      ],
+      [
+        [0, 2],
+        [0, 1],
+        [1, 1],
+      ],
 
-    [
-      [2, 0],
-      [1, 1],
-      [0, 2],
-    ],
-    [
-      [2, 0],
-      [2, 1],
-      [1, 1],
-    ],
-    [
-      [2, 0],
-      [1, 0],
-      [1, 1],
-    ],
+      [
+        [0, 2],
+        [1, 2],
+        [1, 1],
+      ],
+      [
+        [0, 2],
+        [1, 2],
+        [2, 2],
+      ],
+      [
+        [1, 0],
+        [0, 0],
+        [0, 1],
+      ],
+      [
+        [1, 0],
+        [1, 1],
+        [1, 2],
+      ],
+      [
+        [1, 2],
+        [2, 2],
+        [2, 1],
+      ],
+      [
+        [2, 0],
+        [2, 1],
+        [2, 2],
+      ],
 
-    [
-      [2, 1],
-      [2, 0],
-      [1, 0],
-    ],
+      [
+        [2, 0],
+        [1, 1],
+        [0, 2],
+      ],
+      [
+        [2, 0],
+        [2, 1],
+        [1, 1],
+      ],
+      [
+        [2, 0],
+        [1, 0],
+        [1, 1],
+      ],
 
-    [
-      [2, 2],
-      [1, 2],
-      [1, 1],
-    ],
+      [
+        [2, 1],
+        [2, 0],
+        [1, 0],
+      ],
 
-    [
-      [2, 2],
-      [2, 1],
-      [1, 1],
-    ],
-  ];
+      [
+        [2, 2],
+        [1, 2],
+        [1, 1],
+      ],
+
+      [
+        [2, 2],
+        [2, 1],
+        [1, 1],
+      ],
+    ];
+    createGameBoard();
+  }
 
   function createGameBoard() {
     board = [];
@@ -175,7 +188,7 @@ function gameBoard() {
         createGameBoard();
         activePlayer = switchActivePlayer();
         return winner();
-      }else{
+      } else {
         return printWinner();
       }
     } else {
@@ -208,10 +221,12 @@ function gameBoard() {
   }
 
   function printWinner() {
-    if (!gameFlag) {
-      return -1;
-    } else {
+    if (gameFlag) {
       return `${switchActivePlayer().getName()} WON !!!!!!!!!!!!`;
+    } else if(!gameFlag && activePlayer.getMoves().length + switchActivePlayer().getMoves().length == 9) {
+      return "It's a draw";
+    }else {
+      return -1;
     }
   }
 
@@ -229,15 +244,23 @@ function gameBoard() {
     getBoard,
     getWinningScenario,
     getActivePlayer,
+    init,
   };
 }
 
 function displayController() {
-  const game = gameBoard();
   const displayBoard = document.querySelector(".board");
-  displayBoard.addEventListener("click", userInput);
   const displayActiveState = document.querySelector(".activeStateDisplay");
-  updateActiveState(-1);
+  let game;
+  init();
+
+  function init() {
+    game = gameBoard();
+    displayBoard.addEventListener("click", userInput);
+    updateActiveState(-1);
+    generateUiBoard();
+  }
+
   function createButton(row, col) {
     const button = document.createElement("button");
     button.innerText = game.getBoard()[row][col];
@@ -261,8 +284,8 @@ function displayController() {
   function updateActiveState(e) {
     let displayOutput = "";
     if (e == -1) {
-      displayOutput = `Player ${titleDisplay(
-        game.getActivePlayer().getMarker(),
+      displayOutput = `${titleDisplay(
+        game.getActivePlayer().getName(),
       )} Play Move`;
     } else {
       displayOutput = titleDisplay(e);
@@ -283,12 +306,23 @@ function displayController() {
       .join(" ");
   }
 
-  return { generateUiBoard };
+  return { generateUiBoard, updateActiveState, init };
 }
 
 function gameController() {
+  const resetBtn = document.querySelector(".reset");
   const display = displayController();
-  display.generateUiBoard();
+  const game = gameBoard();
+  display.init();
+
+  function resetBoard() {
+    player1.reset();
+    player2.reset();
+    game.init();
+    display.init();
+  }
+
+  resetBtn.addEventListener("click", resetBoard);
 }
 
 gameController();
