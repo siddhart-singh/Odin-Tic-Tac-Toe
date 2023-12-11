@@ -183,6 +183,11 @@ function gameBoard() {
             duplicateFlag = true;
           }
         });
+      activePlayer.getMoves().forEach((move) => {
+        if (move.join() == [row, column].join()) {
+          duplicateFlag = true;
+        }
+      });
       if (!duplicateFlag) {
         activePlayer.setMoves([row, column]);
         createGameBoard();
@@ -223,9 +228,13 @@ function gameBoard() {
   function printWinner() {
     if (gameFlag) {
       return `${switchActivePlayer().getName()} WON !!!!!!!!!!!!`;
-    } else if(!gameFlag && activePlayer.getMoves().length + switchActivePlayer().getMoves().length == 9) {
+    } else if (
+      !gameFlag &&
+      activePlayer.getMoves().length + switchActivePlayer().getMoves().length ==
+        9
+    ) {
       return "It's a draw";
-    }else {
+    } else {
       return -1;
     }
   }
@@ -285,7 +294,7 @@ function displayController() {
     let displayOutput = "";
     if (e == -1) {
       displayOutput = `${titleDisplay(
-        game.getActivePlayer().getName(),
+        game.getActivePlayer().getName()
       )} Play Move`;
     } else {
       displayOutput = titleDisplay(e);
