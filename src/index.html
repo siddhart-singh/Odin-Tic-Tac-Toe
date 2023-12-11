@@ -9,16 +9,22 @@
     <script src="./script.js" defer></script>
   </head>
   <body
-    class="flex h-screen w-screen flex-col justify-center gap-8 overflow-hidden py-12"
+    class="flex h-screen w-screen flex-col items-center justify-center gap-6 overflow-hidden py-12"
   >
-    <h1 class="text-center text-6xl">Tic Tac Toe</h1>
+    <h1 class="text-center text-6xl text-slate-600">Tic Tac Toe</h1>
     <div
       class="container mx-auto flex flex-col items-center justify-center gap-4"
     >
-      <h1 class="activeStateDisplay text-lg"></h1>
+      <h1 class="activeStateDisplay text-lg text-slate-600"></h1>
       <div
-        class="board grid grid-cols-3 grid-rows-3 border border-gray-500 bg-slate-300"
+        class="board grid grid-cols-3 grid-rows-3 border border-slate-400 bg-slate-100"
       ></div>
     </div>
+    <button
+      type="button"
+      class="w-fit border text-slate-600 border-slate-400 bg-slate-100 px-12 py-4 font-semibold hover:bg-slate-300 hover:text-slate-900 hover:border-slate-500"
+    >
+      Reset
+    </button>
   </body>
 </html>

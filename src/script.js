@@ -259,8 +259,8 @@ function displayController() {
   function updateActiveState(e) {
     let displayOutput = "";
     if (e == -1) {
-      displayOutput = `${titleDisplay(
-        game.getActivePlayer().getName(),
+      displayOutput = `Player ${titleDisplay(
+        game.getActivePlayer().getMarker(),
       )} Play Move`;
     } else {
       displayOutput = titleDisplay(e);
