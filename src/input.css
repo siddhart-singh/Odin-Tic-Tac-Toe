@@ -7,6 +7,6 @@
   }
 
   .board-btn {
-    @apply tile h-40 w-40 border border-slate-400 text-8xl text-slate-600 hover:border-slate-600 hover:bg-slate-300 hover:text-slate-900;
+    @apply tile h-28 w-28 border border-slate-400 text-6xl text-slate-600 hover:border-slate-600 hover:bg-slate-300 hover:text-slate-900;
   }
 }
