@@ -175,6 +175,8 @@ function gameBoard() {
         createGameBoard();
         activePlayer = switchActivePlayer();
         return winner();
+      }else{
+        return printWinner();
       }
     } else {
       return printWinner();
